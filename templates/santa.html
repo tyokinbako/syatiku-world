@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>サンタのはびこるスケジュール帳</title>
+  <!-- FullCalendar CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 900px;
+      margin: 2rem auto;
+    }
+    #calendar {
+      max-width: 900px;
+      margin: 1rem auto;
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+    form input,
+    form button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    form input[type="text"] {
+      flex: 2 1 200px;
+    }
+    form input[type="date"],
+    form input[type="time"] {
+      flex: 1 1 120px;
+    }
+    form button {
+      flex: 1 1 100px;
+    }
+  </style>
+</head>
+<body>
+  <h1>スケジュール帳（時間指定対応）</h1>
+
+  <!-- 追加フォーム -->
+  <form id="event-form">
+    <input type="text" id="title" placeholder="予定タイトル" required />
+    <input type="date" id="date" required />
+    <input type="time" id="startTime" required />
+    <input type="time" id="endTime" required />
+    <button type="submit">追加</button>
+  </form>
+
+  <!-- カレンダー本体 -->
+  <div id="calendar"></div>
+
+  <!-- FullCalendar 本体 -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+  <script>
+    const STORAGE_KEY = 'myScheduleEvents';
+
+    // 生データは { title, date, startTime, endTime }
+    const loadRaw = () =>
+      JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+    const saveRaw = arr =>
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+
+    // FullCalendar 用に整形
+    const loadEvents = () =>
+      loadRaw().map(e => ({
+        title: e.title,
+        start: e.date + 'T' + e.startTime,
+        end:   e.date + 'T' + e.endTime,
+      }));
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const calendarEl = document.getElementById('calendar');
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',      // 週表示の時間軸ビュー
+        locale: 'ja',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+        slotMinTime: '06:00:00',          // 表示開始時刻
+        slotMaxTime: '22:00:00',          // 表示終了時刻
+        allDaySlot: false,                // 終日スロット非表示
+        events: loadEvents(),
+        eventDidMount: info => {
+          // イベントにツールチップ（開始～終了）
+          info.el.setAttribute(
+            'title',
+            info.event.start.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }) +
+            ' 〜 ' +
+            info.event.end.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })
+          );
+        }
+      });
+      calendar.render();
+
+      // フォームから追加
+      document.getElementById('event-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const title     = document.getElementById('title').value.trim();
+        const date      = document.getElementById('date').value;
+        const startTime = document.getElementById('startTime').value;
+        const endTime   = document.getElementById('endTime').value;
+        if (!title || !date || !startTime || !endTime) return;
+
+        const raw = loadRaw();
+        raw.push({ title, date, startTime, endTime });
+        saveRaw(raw);
+
+        // カレンダーにも反映
+        calendar.addEvent({
+          title,
+          start: date + 'T' + startTime,
+          end:   date + 'T' + endTime
+        });
+
+        e.target.reset();
+      });
+    });
+  </script>
+</body>
+</html>
