@@ -12,5 +12,9 @@ def santa():
 def hello():
     return render_template("index.html")
 
+@app.route("/riyoukiyaku")
+def unti():
+    return render_template("riyoukiyaku.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
