@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>うんこ</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<html>
+<body>
+    <h1>Flaskで地図表示</h1>
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // 地図を初期化（東京の緯度経度）
+        var map = L.map('map').setView([39.7016553733589, 141.13668115804109],14)
+
+        // OpenStreetMapのタイルを読み込む
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+        // 共通のカスタムアイコン
+        var customIcon = L.icon({
+            iconUrl: '/static/yubi.jpeg', // 共通の画像
+            iconSize: [50, 50],
+            iconAnchor: [25, 50],
+            popupAnchor: [0, -50]
+        });
+
+        // マーカーを追加
+        L.marker([39.7016553733589, 141.13668115804109],{icon:customIcon}).addTo(map)
+            .bindPopup('うんこ')
+            .openPopup();
+
+ </script>
+</body>
+</html>

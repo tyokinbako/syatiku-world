@@ -44,7 +44,7 @@
 </head>
 <body>
   <h1>スケジュール帳（時間指定対応）</h1>
-
+<p id="haru"></p>
   <!-- 追加フォーム -->
   <form id="event-form">
     <input type="text" id="title" placeholder="予定タイトル" required />
@@ -53,7 +53,6 @@
     <input type="time" id="endTime" required />
     <button type="submit">追加</button>
   </form>
-
   <!-- カレンダー本体 -->
   <div id="calendar"></div>
 
@@ -101,6 +100,23 @@
           );
         }
       });
+      console.log("あｓｒｄｔｆｇｙふじ");
+      const raw = loadRaw();
+      console.log(raw);
+      let totalTime = 0;
+      const today_month = new Date().getMonth()+1;
+      for (const event of raw) {
+        if (Number(event.date.split('-')[1]) === today_month) {
+          const startTime =new Date(event.date + 'T' + event.startTime);
+          const endTime =new Date(event.date + 'T' + event.endTime);
+          const timeDiff = endTime - startTime;
+          totalTime += timeDiff
+        }
+      }
+      console.log((totalTime / (1000 * 60 * 60) ) + "時間働いています");
+      const totalTimeHour = totalTime / (1000 * 60 * 60);
+      document.getElementById('haru').textContent = "今月は" + totalTimeHour + "時間働いています"
+
       calendar.render();
 
       // フォームから追加
