@@ -16,5 +16,9 @@ def hello():
 def unti():
     return render_template("riyoukiyaku.html")
 
+@app.route("/aaaa")
+def aaaa():
+    return render_template("aaaa.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
