@@ -40,11 +40,48 @@
     form button {
       flex: 1 1 100px;
     }
+    .speechBubble {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 16px;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      background-color: #fb0303;
+      text-align: left;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #fffbfb;
+    }
+
+.speechBubble::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  border-style: solid;
+  border-width: 20px 20px 0 0;
+  border-color: #000000 transparent transparent;
+  translate: -50% 100%;
+}
+
+.speechBubble::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  border-style: solid;
+  border-width: 15.2px 15.2px 0 0;
+  border-color: #fb0303 transparent transparent;
+  translate: calc(-50% - 0.4px) 100%;
+}
   </style>
 </head>
 <body>
   <h1>スケジュール帳（時間指定対応）</h1>
-<p id="haru"></p>
+<img id="syatiku" src="/static/yubi.jpeg" alt="">  
+<p id="haru" class="speechBubble"></p>
   <!-- 追加フォーム -->
   <form id="event-form">
     <input type="text" id="title" placeholder="予定タイトル" required />
@@ -116,6 +153,11 @@
       console.log((totalTime / (1000 * 60 * 60) ) + "時間働いています");
       const totalTimeHour = totalTime / (1000 * 60 * 60);
       document.getElementById('haru').textContent = "今月は" + totalTimeHour + "時間働いています"
+      if (totalTimeHour>80){
+        document.getElementById('syatiku').src = "/static/くまビーム.png";
+      } else if(totalTimeHour>50){
+        document.getElementById('syatiku').src = "/static/hage.png";
+      }
 
       calendar.render();
 
