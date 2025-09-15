@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ワンクリックコピー</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #ffffff;
+        }
+        .copy-container {
+            padding: 20px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px #ffffff;
+            text-align: center;
+        }
+        #textToCopy {
+            border: 1px solid #cacaca;
+            background-color: #ffffff;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            width: 650px;
+            text-align: left;
+            white-space: pre-wrap; /* 改行を反映 */
+        }
+        #copyButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #0174f0;
+            background-color: #007bff;
+            color: rgb(255, 255, 255);
+            transition: background-color 0.3s;
+        }
+        #copyButton:hover {
+            background-color: #18f290;
+        }
+        #message {
+            margin-top: 10px;
+            color: rgb(11, 10, 10);
+            font-weight: bold;
+            height: 20px; /* メッセージ表示領域を確保 */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="copy-container">
+        <h2>以下の文章をコピー</h2>
+        <div id="textToCopy">
+退職届
+私こと、過度な長時間労働と理不尽な労務環境により、心身ともに限界を迎えました。
+令和〇年〇月〇日をもちまして退職いたします。
+人を人とも思わぬ働かせ方を続ける会社に、これ以上尽くす気持ちは一切ありません。
+どうぞ今後も社員を使い潰すことでしか成り立たない経営を続けてください。
+私は、これ以上人生を無駄にするつもりはありませんので、ここで袂を分かちます。
+令和〇年〇月〇日
+所属：〇〇部
+氏名：〇〇〇〇　印
+株式会社〇〇〇〇
+代表取締役社長　〇〇〇〇　殿
+        </div>
+        <button id="copyButton">コピー</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        const copyButton = document.getElementById('copyButton');
+        const textToCopy = document.getElementById('textToCopy').innerText;
+        const messageElement = document.getElementById('message');
+
+        copyButton.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                messageElement.textContent = "コピーしました！";
+                setTimeout(() => {
+                    messageElement.textContent = "";
+                }, 2000); // 2秒後にメッセージを消す
+            } catch (err) {
+                console.error('コピーに失敗しました: ', err);
+                messageElement.textContent = "コピーに失敗しました。";
+            }
+        });
+    </script>
+
+</body>
+</html>

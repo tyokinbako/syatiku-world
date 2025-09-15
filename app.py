@@ -20,5 +20,9 @@ def unti():
 def aaaa():
     return render_template("aaaa.html")
 
+@app.route("/momomo")
+def aaaaaaaaaw():
+    return render_template("sutezerihu.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
