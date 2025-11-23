@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>サンタのはびこるスケジュール帳</title>
+  <title>脱法サンタのはびこるスケジュール帳</title>
   <!-- FullCalendar CSS -->
   <link
     href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css"
@@ -48,7 +48,7 @@
       padding: 16px;
       border: 2px solid #000000;
       border-radius: 8px;
-      background-color: #fb0303;
+      background-color: #1e90ff;
       text-align: left;
       font-size: 16px;
       font-weight: 400;
@@ -74,19 +74,19 @@
   left: 50%;
   border-style: solid;
   border-width: 15.2px 15.2px 0 0;
-  border-color: #fb0303 transparent transparent;
+  border-color: #1e90ff transparent transparent;
   translate: calc(-50% - 0.4px) 100%;
 }
   </style>
 </head>
 <body>
-  <h1>働きづめﾊﾟﾗﾒｰﾀ↓ 隈猫(下) はげ(中) 隈ビームやば猫(上)</h1>
+  <h1>遊ぶ予定多さﾊﾟﾗﾒｰﾀ↓ 幸せを運ぶ青い猫(下)  猫ミーム(上)</h1>
 <biv><h2>分の指定は0分のみにしてください。0以外だと壊れます。</h2>
 <div>
   <p id="haru" class="speechBubble"></p>
   </div>
   <div>
-  <img id="syatiku" src="/static/hutuu.png" alt="">  
+  <img id="syatiku" src="/static/コスチューム3.png" alt="">  
   </div>
   <!-- 追加フォーム -->
   <form id="event-form">
@@ -156,11 +156,11 @@
           totalTime += timeDiff
         }
       }
-      console.log((totalTime / (1000 * 60 * 60) ) + "時間働いています");
+      console.log((totalTime / (1000 * 60 * 60) ) + "時間楽しむ予定があります");
       const totalTimeHour = totalTime / (1000 * 60 * 60);
-      document.getElementById('haru').textContent = "今月は" + totalTimeHour + "時間働いています"
+      document.getElementById('haru').textContent = "今月は" + totalTimeHour + "時間楽しむ予定があります"
       if (totalTimeHour>80){
-        document.getElementById('syatiku').src = "/static/くまビーム.png";
+        document.getElementById('syatiku').src = "/static/kani.png";
       } else if(totalTimeHour>50){
         document.getElementById('syatiku').src = "/static/hage.png";
       }
@@ -191,120 +191,5 @@
       });
     });
   </script>
-  <!-- KANI -->
-   
-<h1 class="title"><a href="/momomo">退職時の捨て台詞(使わない方が良い )</a></h1>
-  <h1>遊ぶ予定多さﾊﾟﾗﾒｰﾀ↓ 幸せを運ぶ青い猫(下)  猫ミーム(上)</h1>
-<biv><h2>分の指定は0分のみにしてください。0以外だと壊れます。</h2>
-<div>
-  <p id="haru_kani" class="speechBubble"></p>
-  </div>
-  <div>
-  <img id="syatiku_kani" src="/static/コスチューム3.png" alt="">  
-  </div>
-  <!-- 追加フォーム -->
-  <form id="event-form_kani">
-    <input type="text" id="title_kani" placeholder="予定タイトル" required />
-    <input type="date" id="date_kani" required />
-    <input type="time" id="startTime_kani" required />
-    <input type="time" id="endTime_kani" required />
-    <button type="submit">追加</button>
-  </form>
-  <!-- カレンダー本体 -->
-  <div id="calendar_kani"></div>
-
-  <!-- FullCalendar 本体 -->
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-  <script>
-    const STORAGE_KEY_kani = 'myScheduleEvents';
-
-    // 生データは { title, date, startTime, endTime }
-    const loadRaw_kani = () =>
-      JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-
-    const saveRaw_kani = arr =>
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-
-    // FullCalendar 用に整形
-    const loadEvents_kani = () =>
-      loadRaw_kani().map(e => ({
-        title: e.title,
-        start: e.date + 'T' + e.startTime,
-        end:   e.date + 'T' + e.endTime,
-      }));
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const calendarEl = document.getElementById('calendar_kani');
-      const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'timeGridWeek',      // 週表示の時間軸ビュー
-        locale: 'ja',
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        },
-        slotMinTime: '06:00:00',          // 表示開始時刻
-        slotMaxTime: '22:00:00',          // 表示終了時刻
-        allDaySlot: false,                // 終日スロット非表示
-        events: loadEvents_kani(),
-        eventDidMount: info => {
-          // イベントにツールチップ（開始～終了）
-          info.el.setAttribute(
-            'title',
-            info.event.start.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }) +
-            ' 〜 ' +
-            info.event.end.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })
-          );
-        }
-      });
-      console.log("あｓあｄｔｆｇｙふじ");
-      const raw = loadRaw_kani();
-      console.log(raw);
-      let totalTime = 0;
-      const today_month = new Date().getMonth()+1;
-      for (const event of raw) {
-        if (Number(event.date.split('-')[1]) === today_month) {
-          const startTime =new Date(event.date + 'T' + event.startTime);
-          const endTime =new Date(event.date + 'T' + event.endTime);
-          const timeDiff = endTime - startTime;
-          totalTime += timeDiff
-        }
-      }
-      console.log((totalTime / (1000 * 60 * 60) ) + "時間楽しむ予定があります");
-      const totalTimeHour = totalTime / (1000 * 60 * 60);
-      document.getElementById('haru_kani').textContent = "今月は" + totalTimeHour + "時間楽しむ予定があります"
-      if (totalTimeHour>80){
-        document.getElementById('syatiku_kani').src = "/static/kani.png";
-      } else if(totalTimeHour>50){
-        document.getElementById('syatiku_kani').src = "/static/hage.png";
-      }
-
-      calendar.render();
-
-      // フォームから追加
-      document.getElementById('event-form_kani').addEventListener('submit_kani', e => {
-        e.preventDefault();
-        const title     = document.getElementById('title_kani').value.trim();
-        const date      = document.getElementById('date_kani').value;
-        const startTime = document.getElementById('startTime_kani').value;
-        const endTime   = document.getElementById('endTime_kani').value;
-        if (!title || !date || !startTime || !endTime) return;
-
-        const raw = loadRaw_kani();
-        raw.push({ title_kani, date_kani, startTime_kani, endTime_kani });
-        saveRaw(raw);
-
-        // カレンダーにも反映
-        calendar_kani.addEvent_kani({
-          title_kani,
-          start_kani: date + 'T' + startTime,
-          end_kani:   date + 'T' + endTime
-        });
-
-        e.target_kani.reset();
-      });
-    });
-  </script>
-<h1 class="title"><a href="https://www.jalan.net/theme/specialweek/?msockid=28b2eac2ee6b64be1aa1fc66ef1165c2">旅行</a></h1>
 </body>
 </html>

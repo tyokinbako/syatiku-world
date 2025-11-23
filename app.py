@@ -8,6 +8,10 @@ schedule_list = []
 def santa():
     return render_template("santa.html")
 
+@app.route("/kani", methods=["GET", "POST"])
+def sana():
+    return render_template("aiaiaiaiaiai.html")
+
 @app.route("/")
 def hello():
     return render_template("index.html")
