@@ -77,6 +77,75 @@
   border-color: #fb0303 transparent transparent;
   translate: calc(-50% - 0.4px) 100%;
 }
+    body {
+      font-family: sans-serif;
+      max-width: 900px;
+      margin: 2rem auto;
+      background-color: #ffffff;
+    }
+    #calendar {
+      max-width: 900px;
+      margin: 1rem auto;
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+    form input,
+    form button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    form input[type="text"] {
+      flex: 2 1 200px;
+    }
+    form input[type="date"],
+    form input[type="time"] {
+      flex: 1 1 120px;
+    }
+    form button {
+      flex: 1 1 100px;
+    }
+    .speechBubble_kani {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 16px;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      background-color: #4169e1;
+      text-align: left;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #fffbfb;
+    }
+
+.speechBubble_kani::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  border-style: solid;
+  border-width: 20px 20px 0 0;
+  border-color: #000000 transparent transparent;
+  translate: -50% 100%;
+}
+
+.speechBubble_kani::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  border-style: solid;
+  border-width: 15.2px 15.2px 0 0;
+  border-color: #4169e1 transparent transparent;
+  translate: calc(-50% - 0.4px) 100%;
+}
+
   </style>
 </head>
 <body>
@@ -102,7 +171,7 @@
   <!-- FullCalendar 本体 -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
   <script>
-    const STORAGE_KEY = 'myScheduleEvents';
+    const STORAGE_KEY = 'myScheduleEvnts';
 
     // 生データは { title, date, startTime, endTime }
     const loadRaw = () =>
@@ -117,6 +186,7 @@
         title: e.title,
         start: e.date + 'T' + e.startTime,
         end:   e.date + 'T' + e.endTime,
+        color:'red',
       }));
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -197,7 +267,7 @@
   <h1>遊ぶ予定多さﾊﾟﾗﾒｰﾀ↓ 幸せを運ぶ青い猫(下)  猫ミーム(上)</h1>
 <biv><h2>分の指定は0分のみにしてください。0以外だと壊れます。</h2>
 <div>
-  <p id="haru_kani" class="speechBubble"></p>
+  <p id="haru_kani" class="speechBubble_kani"></p>
   </div>
   <div>
   <img id="syatiku_kani" src="/static/コスチューム3.png" alt="">  
@@ -216,14 +286,14 @@
   <!-- FullCalendar 本体 -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
   <script>
-    const STORAGE_KEY_kani = 'myScheduleEvents';
+    const STORAGE_KEY_kani = 'myScheduleEvent';
 
     // 生データは { title, date, startTime, endTime }
     const loadRaw_kani = () =>
-      JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      JSON.parse(localStorage.getItem(STORAGE_KEY_kani) || '[]');
 
     const saveRaw_kani = arr =>
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+      localStorage.setItem(STORAGE_KEY_kani, JSON.stringify(arr));
 
     // FullCalendar 用に整形
     const loadEvents_kani = () =>
@@ -282,29 +352,30 @@
       calendar.render();
 
       // フォームから追加
-      document.getElementById('event-form_kani').addEventListener('submit_kani', e => {
+      document.getElementById('event-form_kani').addEventListener('submit', e => {
         e.preventDefault();
         const title     = document.getElementById('title_kani').value.trim();
         const date      = document.getElementById('date_kani').value;
         const startTime = document.getElementById('startTime_kani').value;
         const endTime   = document.getElementById('endTime_kani').value;
+        console.log(title, date);
         if (!title || !date || !startTime || !endTime) return;
 
         const raw = loadRaw_kani();
-        raw.push({ title_kani, date_kani, startTime_kani, endTime_kani });
-        saveRaw(raw);
+        raw.push({ title, date, startTime, endTime });
+        saveRaw_kani(raw);
 
         // カレンダーにも反映
-        calendar_kani.addEvent_kani({
-          title_kani,
-          start_kani: date + 'T' + startTime,
-          end_kani:   date + 'T' + endTime
+        calendar_kani.addEvent({
+          title,
+          start: date + 'T' + startTime,
+          end:   date + 'T' + endTime
         });
 
         e.target_kani.reset();
       });
     });
   </script>
-<h1 class="title"><a href="https://www.jalan.net/theme/specialweek/?msockid=28b2eac2ee6b64be1aa1fc66ef1165c2">旅行</a></h1>
+<h1 class="title"><a href="https://www.jalan.net"target="_blank">旅行</a></h1>
 </body>
 </html>
